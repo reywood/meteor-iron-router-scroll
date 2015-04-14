@@ -52,9 +52,15 @@ function getAppropriateScrollPosition() {
     var hash = window.location.hash;
     if (hash && hash.length > 1) {
         hash = hash.substr(1);
+
         var $anchor = $('a[name="' + hash + '"]');
         if ($anchor.length > 0) {
             return $anchor.offset().top;
+        }
+
+        var $element = $('#' + hash);
+        if ($element.length > 0) {
+            return $element.offset().top;
         }
     }
 
