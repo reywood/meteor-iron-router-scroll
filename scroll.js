@@ -9,9 +9,15 @@ if (Package['iron:router']) {
 
 
 function initPlugin() {
-    Iron.Router.plugins.pageScroll = function pageScrollPlugin(router) {
+    Iron.Router.plugins['reywood:iron-router-scroll'] = function pageScrollPlugin(router) {
         router.onAfterAction(scrollToCorrectPosition);
         router.onStop(saveScrollPosition);
+    };
+
+    Iron.Router.plugins.pageScroll = function deprecatedPageScrollPlugin(router) {
+        console.warn('reywood:iron-router-scroll: Initializing this plugin with the name "pageScroll" ' +
+                     'has been deprecated. Please use Router.plugin(\'reywood:iron-router-scroll\') instead.');
+        Iron.Router.plugins['reywood:iron-router-scroll'].call(this, router);
     };
 }
 

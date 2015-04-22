@@ -1,7 +1,7 @@
 Package.describe({
     name: 'reywood:iron-router-scroll',
     summary: 'Expected scroll functionality when navigating site with iron:router',
-    version: '0.0.4',
+    version: '0.0.5',
     git: 'https://github.com/reywood/meteor-iron-router-scroll.git'
 });
 

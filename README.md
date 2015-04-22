@@ -15,14 +15,12 @@ To install:
 $ meteor add reywood:iron-router-scroll
 ```
 
-To enable the plugin, you will need to call `Router.plugin('pageScroll');` somewhere amongst your router code.
+To enable the plugin, you will need to call `Router.plugin('reywood:iron-router-scroll');` somewhere amongst your router code.
 
 ```javascript
-Router.configure({
-    ...
-});
-
-Router.plugin('pageScroll');
+if (Meteor.isClient) {
+    Router.plugin('reywood:iron-router-scroll');
+}
 
 Router.route('/', {
     ...
