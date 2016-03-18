@@ -1,4 +1,5 @@
 var wasBrowserNavButtonPressed = false;
+var lastUrlVisited;
 
 if (Package['iron:router']) {
     initPlugin();
@@ -10,7 +11,7 @@ if (Package['iron:router']) {
 
 function initPlugin() {
     Iron.Router.plugins['reywood:iron-router-scroll'] = function pageScrollPlugin(router) {
-        router.onAfterAction(scrollToCorrectPosition);
+        router.onAfterAction(scrollToCorrectPositionWhenReady);
         router.onStop(saveScrollPosition);
     };
 
@@ -28,11 +29,12 @@ function handleBrowserNavButtonPresses() {
 }
 
 
-function scrollToCorrectPosition() {
+function scrollToCorrectPositionWhenReady() {
     if (this.ready()) {
-        deferUntilDomIsReady(function () {
-            var position = getAppropriateScrollPosition();
-            $('body').scrollTop(position);
+        ifUrlHasActuallyChanged(function scrollWhenDomIsReady() {
+            deferUntilDomIsReady(function scroll() {
+                $('body').scrollTop(getAppropriateScrollPosition());
+            });
         });
     }
 }
@@ -41,6 +43,20 @@ function saveScrollPosition() {
     var urlSessionKey = getCurrentUrlSessionKey();
     var position = $('body').scrollTop();
     Session.set(urlSessionKey, position);
+}
+
+function ifUrlHasActuallyChanged(callback) {
+    deferUntilWindowLocationUpdated(function() {
+        var currentUrl = window.location.href;
+        if (currentUrl !== lastUrlVisited) {
+            lastUrlVisited = currentUrl;
+            callback();
+        }
+    });
+}
+
+function deferUntilWindowLocationUpdated(callback) {
+    Meteor.defer(callback);
 }
 
 function deferUntilDomIsReady(callback) {
